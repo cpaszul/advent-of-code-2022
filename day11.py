@@ -49,7 +49,7 @@ and test {self.test}, passing to {self.true} and {self.false}'
     def add_item(self, item: int) -> None:
         self.items.append(item)
 
-def part_1(loc: str = DEFAULT_INPUT) -> str:
+def part_1(loc: str = DEFAULT_INPUT) -> int:
     with open(loc) as f:
         monkeys = [Monkey(m) for m in f.read().split('\n\n')]
     items_inspected = [0] * len(monkeys)
@@ -62,7 +62,7 @@ def part_1(loc: str = DEFAULT_INPUT) -> str:
     items_inspected.sort(reverse = True)
     return items_inspected[0] * items_inspected[1]
             
-def part_2(loc: str = DEFAULT_INPUT) -> str:
+def part_2(loc: str = DEFAULT_INPUT) -> int:
     with open(loc) as f:
         monkeys = [Monkey(m) for m in f.read().split('\n\n')]
     items_inspected = [0] * len(monkeys)
