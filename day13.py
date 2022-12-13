@@ -1,13 +1,11 @@
+from json import loads
 from functools import cmp_to_key
 
 DEFAULT_INPUT = 'day13.txt'
 
 def part_1(loc: str = DEFAULT_INPUT) -> int:
     with open(loc) as f:
-        pairs = [packets.split('\n') for packets in f.read().split('\n\n')]
-    for pair in pairs:
-        pair[0] = eval(pair[0])
-        pair[1] = eval(pair[1])
+        pairs = [map(loads, packets.split('\n')) for packets in f.read().split('\n\n')]
     return sum(i + 1 for i, pair in enumerate(pairs) if in_order(*pair) == -1)
 
 def in_order(left: list, right: list) -> int:
@@ -38,7 +36,7 @@ def in_order(left: list, right: list) -> int:
     
 def part_2(loc: str = DEFAULT_INPUT) -> int:
     with open(loc) as f:
-        lines = [eval(line.strip()) for line in f.readlines() if line != '\n']
+        lines = [loads(line.strip()) for line in f.readlines() if line != '\n']
     lines.append([[2]])
     lines.append([[6]])
     lines.sort(key=cmp_to_key(in_order))
