@@ -1,4 +1,4 @@
-from collections import defaultdict
+from collections import defaultdict, deque
 from enum import Enum
 
 DEFAULT_INPUT = 'day14.txt'
@@ -60,29 +60,16 @@ def part_2(loc: str = DEFAULT_INPUT) -> int:
                     for x in range(min(start_x, end_x), max(start_x, end_x) + 1):
                         grid[(x, start_y)] = Cell.ROCK
     floor = max(grid.keys(), key=lambda point:point[1])[1] + 2
-    while True:
-        add_sand_floor(grid, floor)
-        if grid[(500, 0)] == Cell.SAND:
-            return len([value for value in grid.values() if value == Cell.SAND])
-
-def add_sand_floor(grid: dict[tuple[int, int], Cell], floor: int) -> None:
-    sand_x, sand_y = 500, 0
-    while True:
-        if sand_y == floor - 1:
-            grid[(sand_x - 1, floor)] = Cell.ROCK
-            grid[(sand_x, floor)] = Cell.ROCK
-            grid[(sand_x + 1, floor)] = Cell.ROCK
-        if grid[(sand_x, sand_y + 1)] == Cell.AIR:
-            sand_y += 1
-        elif grid[(sand_x - 1, sand_y + 1)] == Cell.AIR:
-            sand_x -= 1
-            sand_y += 1
-        elif grid[(sand_x + 1, sand_y + 1)] == Cell.AIR:
-            sand_x += 1
-            sand_y += 1
-        else:
-            grid[(sand_x, sand_y)] = Cell.SAND
-            return None
+    seen = {(500, 0)}
+    d = deque([(500, 0)])
+    while d:
+        x, y = d.popleft()
+        if y != floor - 1:
+            for i in range(-1, 2):
+                if (x + i, y + 1) not in seen and grid[(x + i, y + 1)] == Cell.AIR:
+                    seen.add((x + i, y + 1))
+                    d.append((x + i, y + 1))
+    return len(seen)
 
     
 if __name__ == '__main__':
