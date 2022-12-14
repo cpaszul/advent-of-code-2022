@@ -61,11 +61,11 @@ def part_2(loc: str = DEFAULT_INPUT) -> int:
                         grid[(x, start_y)] = Cell.ROCK
     floor = max(grid.keys(), key=lambda point:point[1])[1] + 2
     while True:
-        can_add_sand = add_sand_floor(grid, floor)
+        add_sand_floor(grid, floor)
         if grid[(500, 0)] == Cell.SAND:
             return len([value for value in grid.values() if value == Cell.SAND])
 
-def add_sand_floor(grid: dict[tuple[int, int], Cell], floor: int) -> bool:
+def add_sand_floor(grid: dict[tuple[int, int], Cell], floor: int) -> None:
     sand_x, sand_y = 500, 0
     while True:
         if sand_y == floor - 1:
@@ -82,7 +82,7 @@ def add_sand_floor(grid: dict[tuple[int, int], Cell], floor: int) -> bool:
             sand_y += 1
         else:
             grid[(sand_x, sand_y)] = Cell.SAND
-            return True
+            return None
 
     
 if __name__ == '__main__':
